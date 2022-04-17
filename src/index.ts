@@ -5,28 +5,86 @@ document.addEventListener('DOMContentLoaded',() => {
     let gameDisplay = document.querySelector('.game-container') as HTMLInputElement;
 
     let position_bird_left = 220;
-    let position_bird_bottom = 100;
+    let position_bird_bottom = 180;
     let gravity = 2;
+    let click_action = false;
+    
+    let isGameOver = false;
+    var lastTimeCall_generateObstacleFunction: number;
 
-    function jump() {
-        if(position_bird_bottom < 500) position_bird_bottom += 50;
-        console.log(position_bird_bottom);
+    function generateObstacle()
+    {
+        let randomHeight = Math.random() * 60;
+        let obstacleLeft = 500;
+        let obstacleBottom = randomHeight;
+        var obstacle = document.createElement('div');
+        obstacle.classList.add('obstacle');
+        gameDisplay.appendChild(obstacle);
+        obstacle.style.left = obstacleLeft + 'px';
+        obstacle.style.bottom = obstacleBottom + 'px';
+
+        function moveObstacle() {
+            if(isGameOver == false) {
+                obstacleLeft -= 2;
+                obstacle.style.left = obstacleLeft + 'px';
+                if(obstacleLeft === -60) {
+                    clearInterval(timerId);
+                    gameDisplay.removeChild(obstacle);
+                }
+                if(obstacleLeft > 200 && obstacleLeft < 280 && position_bird_left === 220 && 
+                    position_bird_bottom < obstacleBottom + 153 ||
+                    position_bird_bottom === 0) {
+                    gameOver();
+                }
+            }
+        }
+        let timerId = setInterval(moveObstacle,20);
+    }
+    
+    function gameOver() {
+        isGameOver = true;
+        document.removeEventListener('click', click_confirm);
+        console.log('Game over');
     }
 
+    function setup() {
+        generateObstacle();
+        lastTimeCall_generateObstacleFunction = window.performance.now();
+    }
+    
+    function click_confirm() {
+        click_action = true;
+    }
+    document.addEventListener('click', click_confirm);
+
     function processInput() {
-        document.addEventListener('click', jump);
+        if(click_action == true)
+        {   
+            if(position_bird_bottom < 500) position_bird_bottom += 70;
+            console.log(position_bird_bottom);
+            click_action = false;
+        }
     }
 
     function update(time: number, delta: number)
     {
-        position_bird_bottom -= gravity;
+        if(isGameOver == false) {
+            position_bird_bottom -= gravity;
+            var deltacallGenerateObstacle = time - lastTimeCall_generateObstacleFunction;
+            if(deltacallGenerateObstacle >= 3000) {
+                generateObstacle(); 
+                lastTimeCall_generateObstacleFunction = time;
+            }
+        }
     }
 
     function render() {
-        bird.style.bottom = position_bird_bottom + 'px';
-        bird.style.left = position_bird_left + 'px';
+        if(isGameOver == false) {
+            bird.style.bottom = position_bird_bottom + 'px';
+            bird.style.left = position_bird_left + 'px';
+        }
     }
-
+    setup()
     let lastTime = window.performance.now();
     function loop() {
         var time = window.performance.now();
