@@ -1,29 +1,36 @@
+import { updateNewScore } from "./ending_scene";
+import { change_to_next_scene } from "./index";
+
 // bird configure
-let position_bird_left = 220;
-let position_bird_bottom = 180;
+let position_bird_left: number;
+let position_bird_bottom: number;
 var myBird: HTMLDivElement;
 let gravity = 2;
+var sky :HTMLInputElement;
 // proccess input
 let click_action = false;
 // the background
 var gameDisplay: HTMLInputElement;
 // decision to end game play
-var updateScore :number[]= [];
-let currentScore = 0;
-let isGameOver = false;
+var updateScore :number[];
+let currentScore: number;
+let isGameOver: boolean;
 // obstacle
-var myObstacleLeft: number[] = [];
+var myObstacleLeft: number[];
 var myObstacleBottom: number;
-var myObstacle: HTMLDivElement[] = [];
-var myTopObstacle: HTMLDivElement[] = [];
+var myObstacle: HTMLDivElement[];
+var myTopObstacle: HTMLDivElement[];
 let gap = 450;
 // call to build more obstacles
 var lastTimeCall_generateObstacleFunction: number;
+// counter the score
+var counter_score: HTMLDivElement;
 
 function gameOver() {
     isGameOver = true;
     document.removeEventListener('click', click_confirm);
     console.log('Game over');
+    updateNewScore(currentScore);
 }
 
 function generateObstacle()
@@ -93,19 +100,35 @@ function moveObstacle() {
     }
 }
 
+function updateCounterScore()
+{
+    counter_score.innerHTML = currentScore.toString();
+}
+
 export function gameplay_scene_setup() {
-    let sky = document.querySelector('.sky') as HTMLInputElement;
+    isGameOver = false;
+    myObstacle = [];
+    myTopObstacle = [];
+    myObstacleLeft = [];
+    currentScore = 0;
+    updateScore = [];
+    position_bird_left = 220;
+    position_bird_bottom = 180;
     gameDisplay = document.querySelector('.game-container') as HTMLInputElement;
-    let bird = document.createElement('div');
-    bird.classList.add('bird');
-    sky.appendChild(bird);
-    console.log('came to this');
-    myBird = bird;
+    sky = document.querySelector('.sky') as HTMLInputElement;
+    // Bird configuring
+    myBird = document.createElement('div');
+    myBird.classList.add('bird');
+    sky.appendChild(myBird);
     myBird.style.bottom = position_bird_bottom + 'px';
     myBird.style.left = position_bird_left + 'px';
     // obstacles
     generateObstacle();
     lastTimeCall_generateObstacleFunction = window.performance.now();
+    // counter score configuring
+    counter_score = document.createElement('div');
+    counter_score.classList.add('counter_score');
+    gameDisplay.appendChild(counter_score);
 }
 
 export function gameplay_scene_proccessInput() {
@@ -114,7 +137,6 @@ export function gameplay_scene_proccessInput() {
         if(click_action == true)
         {   
             if(position_bird_bottom < 500) position_bird_bottom += 50;
-            //console.log(position_bird_bottom);
             click_action = false;
         }
     }
@@ -135,7 +157,19 @@ export function gameplay_scence_update(time: number, delta: number) {
 
 export function gameplay_scene_render() {
     if(isGameOver == false) {
+        updateCounterScore();
         myBird.style.bottom = position_bird_bottom + 'px';
         myBird.style.left = position_bird_left + 'px';
+    }
+    else {
+        myBird.remove();
+        counter_score.remove();
+        for(let i = 0; i < myObstacle.length; i++)
+        {
+            myObstacle[i].remove();
+            myTopObstacle[i].remove();
+        }
+        
+        change_to_next_scene(1, true);
     }
 }
