@@ -22,7 +22,6 @@ function setup() {
     } else if(stateScene == 1) {
         endingScene.ending_scene_setup();
     } else {
-        console.log('go this');
         startScene.start_scence_setup();
     }
 }

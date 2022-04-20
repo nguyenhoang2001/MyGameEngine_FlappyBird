@@ -29,9 +29,7 @@ export class start_scene {
         this.start_button.classList.add('start-button');
         this.gameDisplay.appendChild(this.start_button);
         this.start_button.innerText = 'Play';
-        console.log('come to set up');
         this.start_button.onclick = this.clickPlay;
-        console.log('finish set up');
     }
 
     start_scence_render()
@@ -49,7 +47,6 @@ export class start_scene {
             click_play = false;
             this.start_button.remove();
             change_to_next_scene(0, true);
-            console.log('change to next scene');
         }
     }    
 }
