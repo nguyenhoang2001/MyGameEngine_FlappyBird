@@ -76,19 +76,37 @@
 .restart-button {
     text-align: center;
     position: absolute;
-    width: 100px;
-    height: 45px;
-    left: 220px;
+    width: 200px;
+    height: 50px;
+    left: 175px;
     bottom: 330px;
+    color: black ;
+	text-transform: uppercase;
+	background: yellow;
+	padding: 20px;
+	border-radius: 50px;
+	display: inline-block;
+	border: none;
+	transition: all 0.4s ease 0s;
+    font-weight: bold;
 }
 
 .start-button {
     text-align: center;
     position: absolute;
-    width: 100px;
-    height: 45px;
-    left: 220px;
+    width: 200px;
+    height: 50px;
+    left: 175px;
     bottom: 330px;
+    color: black ;
+	text-transform: uppercase;
+	background: yellow;
+	padding: 20px;
+	border-radius: 50px;
+	display: inline-block;
+	border: none;
+	transition: all 0.4s ease 0s;
+    font-weight: bold;
 }
 
 .counter_score {
