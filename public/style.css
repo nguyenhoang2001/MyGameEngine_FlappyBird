@@ -54,33 +54,35 @@
 .bird {
     background-image: url('flappy-bird.png');
     position: absolute;
-    width: 60px;
-    height: 45px;
+    /* width: 60px;
+    height: 45px; */
 }
 
 .obstacle {
     background-image: url('flappybird-pipe.png');
-    width: 60px;
-    height: 300px;
+    /* width: 60px;
+    height: 300px; */
     position: absolute;
 }
 
 .topObstacle {
     background-image: url('flappybird-pipe.png');
-    width: 60px;
+    /* width: 60px;
+    height: 300px; */
     transform: rotate(180deg);
-    height: 300px;
     position: absolute;
 }
 
 .restart-button {
     text-align: center;
     position: absolute;
-    width: 200px;
+
+    /* width: 200px;
     height: 50px;
     left: 175px;
-    bottom: 330px;
-    color: black ;
+    bottom: 330px; */
+
+    color: black;
 	text-transform: uppercase;
 	background: yellow;
 	padding: 20px;
@@ -94,10 +96,10 @@
 .start-button {
     text-align: center;
     position: absolute;
-    width: 200px;
+    /* width: 200px;
     height: 50px;
     left: 175px;
-    bottom: 330px;
+    bottom: 330px; */
     color: black ;
 	text-transform: uppercase;
 	background: yellow;
@@ -112,12 +114,13 @@
 .counter_score {
     text-align: center;
     position: absolute;
-    /* width: 100px;
-    height: 45px; */
-    left: 220px;
-    bottom: 500px;
-    z-index: +1;
+
+    /* left: 220px;
+    bottom: 570px;
     width: 100px;
+    height: 45px; */
+
+    z-index: +1;
     display: inline-block;
     color: white;
     font-family: "Raleway", sans-serif;
@@ -130,10 +133,12 @@
 .high_score {
     text-align: center;
     position: absolute;
+/* 
     width: 200px;
-    /* height: 45px; */
+    height: 45px;
     left: 180px;
-    bottom: 520px;
+    bottom: 520px; */
+
     display: inline-block;
     color: white;
     font-family: "Raleway", sans-serif;
@@ -146,10 +151,11 @@
 .text_score {
     text-align: center;
     position: absolute;
-    width: 200px;
-    /* height: 45px; */
+
+    /* width: 200px;
+    height: 45px;
     left: 180px;
-    bottom: 450px;
+    bottom: 430px; */
 
     display: inline-block;
     color: white;

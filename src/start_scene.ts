@@ -1,82 +1,39 @@
-import { change_to_next_scene } from "./index";
+// import { inputHandler, Renderer } from "./gameEngine";
+// import { change_to_next_scene } from "./index";
 
-var click_play = false;
-
-export class start_scene {
-    private gameDisplay: HTMLInputElement;
-    private start_button = document.createElement("BUTTON");
-    // public click_play: number;
-
-    constructor() {
-        this.gameDisplay = document.querySelector('.game-container') as HTMLInputElement;
-        this.start_button = document.createElement("BUTTON");
-        this.start_button.classList.add('start-button');
-        this.gameDisplay.appendChild(this.start_button);
-        // clicked play again
-        // this.click_play = 0;
-    }
-
-    private clickPlay()
-    {
-        //this.click_play = true;        
-        // console.log(this.click_play);
-        click_play = true;
-    }
-
-    start_scence_setup()
-    {
-        // For button
-        this.start_button.classList.add('start-button');
-        this.gameDisplay.appendChild(this.start_button);
-        this.start_button.innerText = 'Play';
-        this.start_button.onclick = this.clickPlay;
-    }
-
-    start_scence_render()
-    {
-        // if(this.click_play == 1)
-        // {
-        //     this.click_play = 0;
-        //     this.start_button.remove();
-        //     change_to_next_scene(0, true);
-        //     console.log('change to next scene');
-        // }
-
-        if(click_play == true)
-        {
-            click_play = false;
-            this.start_button.remove();
-            change_to_next_scene(0, true);
-        }
-    }    
-}
-
-// let gameDisplay = document.querySelector('.game-container') as HTMLInputElement;
-// let start_button = document.createElement("BUTTON");
-
-// // clicked play again
 // var click_play = false;
 
-// function clickPlay()
-// {
-//     click_play = true;
-// }
+// let gameEngineRenderer = new Renderer();
+// let gameEngineInputHandler = new inputHandler();
 
-// export function start_scence_setup()
-// {
-//     // For button
-//     start_button.classList.add('start-button');
-//     gameDisplay.appendChild(start_button);
-//     start_button.innerText = 'Play';
-//     start_button.onclick = function() {clickPlay()};;
-// }
+// export class start_scene {
+//     private objectInScene: {object: HTMLElement[]};
 
-// export function start_scence_render()
-// {
-//     if(click_play == true)
-//     {
-//         click_play = false;
-//         start_button.remove();
-//         change_to_next_scene(0, true);
+//     constructor() {
+//         this.objectInScene = {object: []};
 //     }
+
+//     private clickPlay()
+//     {
+//         click_play = true;
+//     }
+
+//     start_scence_setup()
+//     {
+//         // For button
+//         gameEngineRenderer.createObject(this.objectInScene,'.game-container',"BUTTON",'start-button');
+//         gameEngineRenderer.render(this.objectInScene, [200],[50],[175],[330]);
+//         this.objectInScene.object[0].innerText = 'Play';
+//         gameEngineInputHandler.setupOnClickButton({object: this.objectInScene.object[0]},this.clickPlay);
+//     }
+
+//     start_scence_render()
+//     {
+//         if(click_play == true)
+//         {
+//             click_play = false;
+//             gameEngineRenderer.removeObject(this.objectInScene);
+//             change_to_next_scene(0, true);
+//         }
+//     }    
 // }
