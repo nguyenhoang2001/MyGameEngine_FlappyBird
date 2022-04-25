@@ -52,10 +52,7 @@
 }
 
 .bird {
-    background-image: url('flappy-bird.png');
     position: absolute;
-    /* width: 60px;
-    height: 45px; */
 }
 
 .obstacle {

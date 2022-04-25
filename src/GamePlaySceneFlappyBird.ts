@@ -2,9 +2,10 @@ import { passingScore } from "./FlappyBirdGame";
 import { ObjectGame } from "./ObjectGame";
 import { Pipe } from "./Pipe";
 import { Scene } from "./Scene";
+import { Sprite } from "./Sprite";
 
 export class GamePlaySceneFlappyBird extends Scene {
-    bird!: {objectGame:ObjectGame};
+    bird!: {objectGame:Sprite};
     textScore!: {objectGame:ObjectGame};
     pipeDown!: {objectGame:Pipe[]};
     pipeUp!: {objectGame:Pipe[]};
@@ -14,18 +15,24 @@ export class GamePlaySceneFlappyBird extends Scene {
     gravity!:number;
     gap!:number;
     lastTimeGeneratePipe!:number;
+    timeFly!:number;
+    degree!:number;
     constructor() {
         super();
-        this.bird = {objectGame: new ObjectGame('.sky','bird','div',220,180,60,45)};
+        this.bird = {objectGame: new Sprite('.sky','bird','div',220,180,60,45)};
+        this.bird.objectGame.image.push("flappyBird.png");
+        this.bird.objectGame.image.push("birdWingDown.png");
         this.textScore = {objectGame: new ObjectGame('.gameContainer','counterScore','div',220,570,100,45)};
         this.pipeDown = {objectGame: []};
         this.pipeUp = {objectGame: []};
         this.score = 0;
         this.isGameOver = false;
-        this.gravity = 2;
+        this.gravity = 3;
         this.gap = 450;
         this.lastTimeGeneratePipe = 0;
         this.isFly = false;
+        this.timeFly = 0;
+        this.degree = 0;
     }
 
     generatePipe() {
@@ -65,10 +72,10 @@ export class GamePlaySceneFlappyBird extends Scene {
                     this.pipeUp.objectGame[i].updateCheck = true;
                 }
             }
-            if(this.pipeDown.objectGame[i].left > 200 && this.pipeDown.objectGame[i].left < 280 && this.bird.objectGame.left == 220
+            if(this.pipeDown.objectGame[i].left > this.bird.objectGame.left - 20 && this.pipeDown.objectGame[i].left < this.bird.objectGame.left + 60
                 && (this.bird.objectGame.bottom < this.pipeDown.objectGame[i].bottom + 153 || 
                      this.bird.objectGame.bottom > this.pipeDown.objectGame[i].bottom + this.gap - 200) 
-                        || this.bird.objectGame.bottom == 0) {
+                        || this.bird.objectGame.bottom <= 0) {
                 this.gameOver();
             }
         }
@@ -81,8 +88,12 @@ export class GamePlaySceneFlappyBird extends Scene {
     }
 
     fly() {
-        if(this.bird.objectGame.bottom < 500)
-            this.bird.objectGame.bottom += 50;
+        if(this.bird.objectGame.bottom < 500) {
+            this.bird.objectGame.bottom += 60;
+            this.bird.objectGame.left += 3;
+            this.degree -= 60;
+            this.timeFly = -0.03;
+        }
     }
 
     initInputEvent() {
@@ -98,7 +109,16 @@ export class GamePlaySceneFlappyBird extends Scene {
 
     update(time: number, delta: number): void {
         if(this.isGameOver == false) {
-            this.bird.objectGame.bottom -= this.gravity;
+            this.timeFly += 0.03;
+            this.degree += 2;
+            if(this.degree > 30) {
+                this.degree = 30;
+            } else {
+                if(this.degree < -30) {
+                    this.degree = -30;
+                }
+            }
+            this.bird.objectGame.bottom -= this.gravity*this.timeFly;
             this.moveObstacle();
             let deltaGeneratePipe = time - this.lastTimeGeneratePipe;
             if(deltaGeneratePipe >= 3000) {
@@ -113,6 +133,9 @@ export class GamePlaySceneFlappyBird extends Scene {
         this.isGameOver = false;
         this.isFly = false;
         this.bird.objectGame.bottom = 180;
+        this.bird.objectGame.left = 220;
+        this.timeFly = 0;
+        this.degree = 0;
         this.pipeDown = {objectGame: []};
         this.pipeUp = {objectGame: []};
         this.bird.objectGame.configureObject();
@@ -124,8 +147,9 @@ export class GamePlaySceneFlappyBird extends Scene {
     }
 
     render(): void {
-        this.renderer.renderObject(this.bird);
+        this.renderer.renderSprite(this.bird);
         this.renderer.renderObject(this.textScore);
+        this.bird.objectGame.object.style.transform = "rotate(" + this.degree + 'deg)';
         this.textScore.objectGame.object.innerHTML = this.score.toString();
         if(this.pipeDown.objectGame.length > 0) {
             this.renderer.renderManyObjects(this.pipeDown);
