@@ -2,13 +2,13 @@ import { ObjectGame } from "./ObjectGame";
 import { Scene } from "./Scene";
 
 
-export class StartSceneFlappyBird extends Scene {
+export class StartScene extends Scene {
     startButton!: {objectGame:ObjectGame};
     isStart!:boolean;
     constructor() {
         super();
         this.isStart = false;
-        this.startButton = {objectGame: new ObjectGame('.gameContainer','startButton',"BUTTON",175,330,200,50)};
+        this.startButton = {objectGame: new ObjectGame('.gameContainer','startButton',"BUTTON",400,330,200,50)};
     }
 
     initInputEvent() {

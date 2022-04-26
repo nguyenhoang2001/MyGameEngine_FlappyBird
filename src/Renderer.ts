@@ -19,15 +19,15 @@ export class Renderer {
     renderObject(model:{objectGame:ObjectGame}) {
         model.objectGame.object.style.width = model.objectGame.width + 'px';
         model.objectGame.object.style.height = model.objectGame.height + 'px';
-        model.objectGame.object.style.left = model.objectGame.left + 'px';
-        model.objectGame.object.style.bottom = model.objectGame.bottom + 'px';
+        model.objectGame.object.style.left = model.objectGame.x + 'px';
+        model.objectGame.object.style.bottom = model.objectGame.y + 'px';
     }
 
     renderSprite(model:{objectGame:Sprite}) {
         model.objectGame.object.style.width = model.objectGame.width + 'px';
         model.objectGame.object.style.height = model.objectGame.height + 'px';
-        model.objectGame.object.style.left = model.objectGame.left + 'px';
-        model.objectGame.object.style.bottom = model.objectGame.bottom + 'px';
+        model.objectGame.object.style.left = model.objectGame.x + 'px';
+        model.objectGame.object.style.bottom = model.objectGame.y + 'px';
         if(this.firstTimeChangeImage == true) {
             this.timePreviousChangeImage = window.performance.now();
             this.enableChangeImage = true;

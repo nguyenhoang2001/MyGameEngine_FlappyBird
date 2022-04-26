@@ -2,16 +2,16 @@ export class ObjectGame {
     parentId!: string;
     objectId!:string;
     object!:HTMLElement;
-    left!:number;
-    bottom!:number;
+    x!:number;
+    y!:number;
     width!:number;
     height!:number;
     className!:string
-    constructor(parentId:string, className:string ,objectId:string, left:number, bottom:number, width:number,height:number) {
+    constructor(parentId:string, className:string ,objectId:string, x:number, y:number, width:number,height:number) {
         this.parentId = parentId;
         this.objectId = objectId;
-        this.left = left;
-        this.bottom = bottom;
+        this.x = x;
+        this.y = y;
         this.width = width;
         this.height = height;
         this.className = className;

@@ -3,7 +3,8 @@
 }
 
 .gameContainer {
-    width: 500px;
+    /* width: 500px; */
+    width: 1000px;
     height: 730px;
     position: absolute;
     left: 80px;
@@ -11,7 +12,8 @@
 
 .sky {
     background-image: url('fb-game-background.png');
-    width: 500px;
+    /* width: 500px; */
+    width: 1000px;
     height: 580px;
     position: absolute;
 }
@@ -30,7 +32,8 @@
     position: absolute;
     background-color: white;
     z-index: +2;
-    left: 580px;
+    /* left: 580px; */
+    left: 1080px;
 }
 
 .borderTop {
@@ -44,7 +47,8 @@
 
 .ground {
     background-image: url('bottom-background.png');
-    width: 500px;
+    /* width: 500px; */
+    width: 1000px;
     height: 150px;
     position: absolute;
     top: 580px;

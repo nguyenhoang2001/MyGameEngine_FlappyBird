@@ -1,8 +1,8 @@
-import { passingScore } from "./FlappyBirdGame";
+import { passingScore } from "./MyGame";
 import { ObjectGame } from "./ObjectGame";
 import { Scene } from "./Scene";
 
-export class EndingSceneFlappyBird extends Scene {
+export class EndingScene extends Scene {
     textScore!: {objectGame:ObjectGame};
     textHighScore!: {objectGame:ObjectGame};
     restartButton!: {objectGame:ObjectGame};
@@ -14,9 +14,9 @@ export class EndingSceneFlappyBird extends Scene {
         this.score = 0;
         this.isRestart = false;
         this.highScore = 0;
-        this.textScore = {objectGame: new ObjectGame('.gameContainer', 'textScore','div',180,430,200,45)};
-        this.textHighScore = {objectGame: new ObjectGame('.gameContainer', 'highScore','div',180,520,200,45)};
-        this.restartButton = {objectGame: new ObjectGame('.gameContainer', 'restartButton','BUTTON',175,330,200,50)};
+        this.textScore = {objectGame: new ObjectGame('.gameContainer', 'textScore','div',410,430,200,45)};
+        this.textHighScore = {objectGame: new ObjectGame('.gameContainer', 'highScore','div',410,520,200,45)};
+        this.restartButton = {objectGame: new ObjectGame('.gameContainer', 'restartButton','BUTTON',400,330,200,50)};
     }
 
     initInputEvent() {

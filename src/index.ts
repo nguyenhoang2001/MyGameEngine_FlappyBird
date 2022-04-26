@@ -1,3 +1,3 @@
-import { FlappyBirdGame } from "./FlappyBirdGame";
-let flappyBirdGame = new FlappyBirdGame();
+import { MyGame } from "./MyGame";
+let flappyBirdGame = new MyGame();
 flappyBirdGame.start();
