@@ -1,7 +1,5 @@
-import { updatePassingScore } from "./EndingScene";
 import { Myobject} from "./GameEngine/Myobject";
 import { Scene } from "./GameEngine/Scene";
-
 
 export class StartScene extends Scene {
     isStart:boolean;
@@ -52,18 +50,17 @@ export class StartScene extends Scene {
     }
 
     update(time: number, delta: number): void {
+        this.addObjects();
+    }
 
+    addObjects() {
+        this.add(this.playButton);
     }
 
     startScene(): void {
         this.myRender.start();
         this.isStart = false;
         this.initInputEvent();
-    }
-
-    render(): void {
-        this.myRender.clear();
-        this.myRender.render(this.playButton);
     }
 }
 

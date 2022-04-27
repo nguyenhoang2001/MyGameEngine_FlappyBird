@@ -133,7 +133,17 @@ export class GamePlayScene extends Scene {
                 this.timeGeneratePipe = 0;
             } else 
                 this.timeGeneratePipe+=delta;
+            this.addObjects();
         }
+    }
+
+    addObjects() {
+        for(let i = 0; i < this.pipeDown.length; i++) {
+            this.add(this.pipeDown[i]);
+            this.add(this.pipeUp[i]);
+        }
+        this.add(this.bird);
+        this.add(this.textScore);
     }
 
     startScene(): void {
@@ -155,14 +165,5 @@ export class GamePlayScene extends Scene {
         this.timeGeneratePipe = 0;
         this.initInputEvent();
         this.generatePipe();
-    }
-
-    render(): void {
-        this.myRender.clear();
-        if(this.pipeDown.length > 0) {
-            this.myRender.renderManyObjects(this.pipeDown);
-            this.myRender.renderManyObjects(this.pipeUp);
-        }
-        this.myRender.renderManyObjects([this.bird, this.textScore]);
     }
 }

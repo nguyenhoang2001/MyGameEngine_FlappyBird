@@ -69,16 +69,18 @@ export class EndingScene extends Scene {
         this.textHighScore.text = 'High score: ' + this.highScore;
         this.initInputEvent();
     }
-
+    update(time: number, delta: number): void {
+        this.addObjects();
+    }
+    addObjects() {
+        this.add(this.rePlayButton);
+        this.add(this.textScore);
+        this.add(this.textHighScore);
+    }
     updateNewScore(newScore:number) {
         this.score = newScore;
         if(this.highScore < newScore) {
             this.highScore = newScore;
         }
-    }
-
-    render(): void {
-        this.myRender.clear();
-        this.myRender.renderManyObjects([this.textScore,this.textHighScore,this.rePlayButton]);
     }
 }
