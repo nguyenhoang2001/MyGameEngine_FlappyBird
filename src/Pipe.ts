@@ -1,9 +1,9 @@
-import { ObjectGame } from "./ObjectGame";
+import { Myobject } from "./GameEngine/Myobject";
 
-export class Pipe extends ObjectGame {
+export class Pipe extends Myobject {
     updateCheck!: boolean;
-    constructor(parrentId:string, className:string, objectId:string, left:number, bottom:number, width:number, height:number) {
-        super(parrentId,className,objectId,left,bottom,width,height);
+    constructor(x:number,y:number,width:number,height:number,degree:number,image:string,objectType:string,text:string) {
+        super(x,y,width,height,degree,image,objectType,text);
         this.updateCheck = false;
     }
 }

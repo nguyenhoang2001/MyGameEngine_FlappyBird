@@ -1,10 +1,10 @@
-import { Renderer } from "./Renderer";
+import { MyRenderer} from "./MyRenderer";
 
 export class Scene {
-    renderer!: Renderer;
     changeScene!:boolean;
+    myRender:MyRenderer;
     constructor() {
-        this.renderer = new Renderer();
+        this.myRender = new MyRenderer('.sky');
         this.changeScene = false;
     }
     inputProcessing() {}

@@ -1,9 +1,7 @@
 import { EndingScene } from "./EndingScene";
-import { Game } from "./Game";
+import { Game } from "./GameEngine/Game";
 import { GamePlayScene } from "./GamePlayScene";
 import { StartScene } from "./StartScene";
-
-export var passingScore = {score: 0};
 
 export class MyGame extends Game {
     startScene:StartScene;

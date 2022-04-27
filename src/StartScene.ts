@@ -1,26 +1,52 @@
-import { ObjectGame } from "./ObjectGame";
-import { Scene } from "./Scene";
+import { updatePassingScore } from "./EndingScene";
+import { Myobject} from "./GameEngine/Myobject";
+import { Scene } from "./GameEngine/Scene";
 
 
 export class StartScene extends Scene {
-    startButton!: {objectGame:ObjectGame};
-    isStart!:boolean;
+    isStart:boolean;
+    playButton:Myobject;
     constructor() {
         super();
         this.isStart = false;
-        this.startButton = {objectGame: new ObjectGame('.gameContainer','startButton',"BUTTON",400,330,200,50)};
+        this.playButton = new Myobject(400,350,200,50,0,'','button','Play');
+    }
+
+    getMousePos(canvas:any, event: any) {
+        var rect = canvas.getBoundingClientRect();
+        return {
+            x: event.clientX - rect.left,
+            y: event.clientY - rect.top
+        };
+    }
+
+    isInside(pos:any, object:Myobject) {
+        return pos.x > object.x && pos.x < object.x+object.width && 
+        pos.y < object.y +object.height && pos.y > object.y;
+    }
+
+    isClick(event:any) {
+        var mousePos = this.getMousePos(this.myRender.canvas, event);
+        if(this.isInside(mousePos, this.playButton)) {
+            this.isStart = true;
+        } else {
+            this.isStart = false;
+        }
     }
 
     initInputEvent() {
-        this.startButton.objectGame.object.onclick = () => { 
-            this.isStart = true;
-        }
+        this.myRender.canvas.addEventListener('click',(event) => {
+            this.isClick(event);
+        })
     }
 
     inputProcessing(): void {
         if(this.isStart == true) {
             this.changeScene = true;
-            this.startButton.objectGame.object.remove();
+            this.myRender.canvas.removeEventListener('click',(event) => {
+                this.isClick(event);
+            })
+            this.myRender.end();
             this.isStart = false;
         }
     }
@@ -30,14 +56,14 @@ export class StartScene extends Scene {
     }
 
     startScene(): void {
+        this.myRender.start();
         this.isStart = false;
-        this.startButton.objectGame.configureObject();
-        this.startButton.objectGame.object.innerText = 'Play';
         this.initInputEvent();
     }
 
     render(): void {
-        this.renderer.renderObject(this.startButton);
+        this.myRender.clear();
+        this.myRender.render(this.playButton);
     }
 }
 

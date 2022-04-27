@@ -1,14 +1,11 @@
-import { Renderer } from "./Renderer";
 import { Scene } from "./Scene";
 import { SceneManager } from "./SceneManager";
 
 export class Game {
     scenes: SceneManager;
-    renderer: Renderer;
     lastTime: number;
     constructor() {
         this.scenes = new SceneManager();
-        this.renderer = new Renderer();
         this.lastTime = window.performance.now();
     }
 

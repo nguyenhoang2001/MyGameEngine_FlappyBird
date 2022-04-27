@@ -1,40 +1,40 @@
-import { passingScore } from "./MyGame";
-import { ObjectGame } from "./ObjectGame";
+import { updatePassingScore } from "./EndingScene";
+import { Myobject} from "./GameEngine/Myobject";
 import { Pipe } from "./Pipe";
-import { Scene } from "./Scene";
-import { Sprite } from "./Sprite";
+import { Scene } from "./GameEngine/Scene";
+import { Sprite } from "./GameEngine/Sprite";
 
 export class GamePlayScene extends Scene {
-    bird!: {objectGame:Sprite};
-    textScore!: {objectGame:ObjectGame};
-    pipeDown!: {objectGame:Pipe[]};
-    pipeUp!: {objectGame:Pipe[]};
+    bird:Sprite;
+    textScore:Myobject;
+    pipeDown:Pipe[];
+    pipeUp:Pipe[];
     score!: number;
     isGameOver!:boolean;
     isFly!: boolean;
     gravity!:number;
     gap!:number;
-    lastTimeGeneratePipe!:number;
-    degreeRotate!:number;
+    timeGeneratePipe!:number;
     height!:number;
     velocity!:number;
     degreeFly!:number;
     isFlyUp!:boolean;
+    timeToChangeFrame:number;
     constructor() {
         super();
-        this.bird = {objectGame: new Sprite('.sky','bird','div',220,180,60,45)};
-        this.bird.objectGame.image.push("flappyBird.png");
-        this.bird.objectGame.image.push("birdWingDown.png");
-        this.textScore = {objectGame: new ObjectGame('.gameContainer','counterScore','div',446,570,100,45)};
-        this.pipeDown = {objectGame: []};
-        this.pipeUp = {objectGame: []};
+        this.bird = new Sprite(220,400,60,45,0,'flappyBird.png','img','');
+        this.textScore = new Myobject(446,115,100,45,0,'','text','0');
+        this.pipeDown = [];
+        this.pipeUp = [];
+        this.bird.frames.push('flappyBird.png');
+        this.bird.frames.push('birdWingDown.png');
         this.score = 0;
         this.isGameOver = false;
         this.gravity = 20;
         this.gap = 450;
-        this.lastTimeGeneratePipe = 0;
+        this.timeGeneratePipe = 3000;
         this.isFly = false;
-        this.degreeRotate = 0;
+        this.timeToChangeFrame = 200;
         this.height = 180;
         this.velocity = 12;
         this.degreeFly = 30;
@@ -43,59 +43,49 @@ export class GamePlayScene extends Scene {
 
     generatePipe() {
         let randomHeight = Math.random() * 60;
-        this.pipeDown.objectGame.push(new Pipe('.gameContainer','obstacle','div',1000,randomHeight,60,300));
-        this.pipeUp.objectGame.push(new Pipe('.gameContainer','topObstacle','div',1000,randomHeight + this.gap,60,300));
-        let lengthPipe = this.pipeDown.objectGame.length;
-        if(lengthPipe > 0) {
-            this.pipeDown.objectGame[lengthPipe - 1].configureObject();
-            this.pipeUp.objectGame[lengthPipe - 1].configureObject();
-        }
+        this.pipeDown.push(new Pipe(1000, 430 - randomHeight, 60,300, 0, 'flappyBirdPipe.png','img',''));
+        this.pipeUp.push(new Pipe(1000, 430 - randomHeight - this.gap, 60,300, 180, 'flappyBirdPipe.png','img',''));
     }
 
     gameOver() {
         this.isGameOver = true;
         this.changeScene = true;
-        passingScore.score = this.score;
-        this.bird.objectGame.object.remove();
-        for(let i = 0; i < this.pipeDown.objectGame.length; i++) {
-            this.pipeDown.objectGame[i].object.remove();
-            this.pipeUp.objectGame[i].object.remove();
-        }
-        this.textScore.objectGame.object.remove();
+        // new added
+        updatePassingScore(this.score);
+        this.myRender.end();
         document.removeEventListener('click',() => {this.isFly = true;});
         console.log('Game over');
     }
 
     moveObstacle() {
-        for(let i = 0; i < this.pipeDown.objectGame.length; i++) {
-            this.pipeDown.objectGame[i].x -= 2;
-            this.pipeUp.objectGame[i].x -= 2;
-            if(this.pipeDown.objectGame[i].updateCheck == false) {
-                if(this.pipeDown.objectGame[i].x + 60 <= this.bird.objectGame.x) {
+        for(let i = 0; i < this.pipeDown.length; i++) {
+            this.pipeDown[i].x -= 2;
+            this.pipeUp[i].x -= 2;
+            if(this.pipeDown[i].updateCheck == false) {
+                if(this.pipeDown[i].x + 60 <= this.bird.x) {
                     this.score += 1;
-                    console.log('Your score: '+this.score);
-                    this.pipeDown.objectGame[i].updateCheck = true;
-                    this.pipeUp.objectGame[i].updateCheck = true;
+                    this.textScore.text = this.score.toString();
+                    console.log('Your score: '+ this.score);
+                    this.pipeDown[i].updateCheck = true;
+                    this.pipeUp[i].updateCheck = true;
                 }
             }
-            if(this.pipeDown.objectGame[i].x > this.bird.objectGame.x - 20 && 
-                this.pipeDown.objectGame[i].x < this.bird.objectGame.x + 60
-                && (this.bird.objectGame.y < this.pipeDown.objectGame[i].y + 153 || 
-                     this.bird.objectGame.y > this.pipeDown.objectGame[i].y + this.gap - 200) 
-                        || this.bird.objectGame.y <= 0) {
+            if(this.pipeDown[i].x > this.bird.x - 20 && 
+                this.pipeDown[i].x < this.bird.x + 60
+                && (this.bird.y <= this.pipeUp[i].height + this.pipeUp[i].y || 
+                     this.bird.y >= this.pipeDown[i].y - this.bird.height) 
+                        || this.bird.y >= 580 - this.bird.height) {
                 this.gameOver();
             }
         }
-        if(this.pipeDown.objectGame.length > 0 && this.pipeDown.objectGame[0].x == -60) {
-            this.pipeDown.objectGame[0].object.remove();
-            this.pipeUp.objectGame[0].object.remove();
-            this.pipeDown.objectGame.shift();
-            this.pipeUp.objectGame.shift();
+        if(this.pipeDown.length > 0 && this.pipeDown[0].x == -60) {
+            this.pipeDown.shift();
+            this.pipeUp.shift();
         }
     }
 
     fly() {
-        this.height = this.bird.objectGame.y + 
+        this.height = this.bird.y - 
         Math.pow(this.velocity, 2)*Math.pow(Math.sin(this.degreeFly), 2);
         this.isFlyUp = true;
     }
@@ -113,63 +103,66 @@ export class GamePlayScene extends Scene {
 
     update(time: number, delta: number): void {
         if(this.isGameOver == false) {
-            this.bird.objectGame.x += this.velocity*Math.cos(this.degreeFly)*delta*0.01;
+            if(this.timeToChangeFrame >= 200) {
+                this.bird.updateFrame();
+                this.timeToChangeFrame = 0;
+            } else 
+                this.timeToChangeFrame+= delta;
+
+            this.bird.x += this.velocity*Math.cos(this.degreeFly)*delta*0.01;
             if(this.isFlyUp == false) {
-                this.degreeRotate += 1;
-                if(this.degreeRotate >= 30) {
-                    this.degreeRotate = 30;
+                this.bird.degree += 1;
+                if(this.bird.degree >= 30) {
+                    this.bird.degree = 30;
                 }
-                this.bird.objectGame.y -= this.gravity*Math.pow(delta*0.01,2)* 2;
+                this.bird.y += this.gravity*Math.pow(delta*0.01,2)* 2;
             } else {
-                this.degreeRotate -= 1;
-                if(this.degreeRotate <= -30 ) {
-                    this.degreeRotate = -30;
+                this.bird.degree -= 1;
+                if(this.bird.degree <= -30 ) {
+                    this.bird.degree = -30;
                 }
-                this.bird.objectGame.y += -1* (this.velocity*Math.sin(this.degreeFly)*delta*0.01
-                - this.gravity*Math.pow(delta*0.01,2));
-                if(this.bird.objectGame.y >= this.height) {
+                this.bird.y += this.velocity*Math.sin(this.degreeFly)*delta*0.01
+                - this.gravity*Math.pow(delta*0.01,2);
+                if(this.bird.y <= this.height) {
                     this.isFlyUp = false;
                 }
             }
             this.moveObstacle();
-            let deltaGeneratePipe = time - this.lastTimeGeneratePipe;
-            if(deltaGeneratePipe >= 3000) {
+            if(this.timeGeneratePipe >= 3000) {
                 this.generatePipe();
-                this.lastTimeGeneratePipe = time;
-            }
+                this.timeGeneratePipe = 0;
+            } else 
+                this.timeGeneratePipe+=delta;
         }
     }
 
     startScene(): void {
+        this.myRender.start();
+        this.bird.y = 400;
+        this.bird.x = 220;
+        this.textScore.text = '0';
+        this.pipeDown = [];
+        this.pipeUp = [];
         this.score = 0;
         this.isGameOver = false;
         this.isFly = false;
-        this.bird.objectGame.y = 180;
-        this.bird.objectGame.x = 220;
-        this.degreeRotate = 0;
         this.height = 0;
         this.velocity = 12;
         this.gravity = 20;
         this.degreeFly = 30;
         this.isFlyUp = false;
-        this.pipeDown = {objectGame: []};
-        this.pipeUp = {objectGame: []};
-        this.bird.objectGame.configureObject();
-        this.textScore.objectGame.configureObject();
-        this.textScore.objectGame.object.innerHTML = this.score.toString();
-        this.lastTimeGeneratePipe = window.performance.now();
+        this.timeToChangeFrame = 200;
+        this.timeGeneratePipe = 0;
         this.initInputEvent();
         this.generatePipe();
     }
 
     render(): void {
-        this.renderer.renderSprite(this.bird);
-        this.renderer.renderObject(this.textScore);
-        this.bird.objectGame.object.style.transform = "rotate(" + this.degreeRotate + 'deg)';
-        this.textScore.objectGame.object.innerHTML = this.score.toString();
-        if(this.pipeDown.objectGame.length > 0) {
-            this.renderer.renderManyObjects(this.pipeDown);
-            this.renderer.renderManyObjects(this.pipeUp);
+        this.myRender.clear();
+        if(this.pipeDown.length > 0) {
+            this.myRender.renderManyObjects(this.pipeDown);
+            this.myRender.renderManyObjects(this.pipeUp);
         }
+        this.myRender.renderManyObjects([this.bird, this.textScore]);
     }
 }
