@@ -21,7 +21,7 @@ export class MyRenderer {
     }
 
     end() {
-        this.clear();
+        //this.clear();
         this.canvas.remove();
     }
 

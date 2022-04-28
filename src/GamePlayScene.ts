@@ -32,7 +32,7 @@ export class GamePlayScene extends Scene {
         this.isGameOver = false;
         this.gravity = 20;
         this.gap = 450;
-        this.timeGeneratePipe = 3000;
+        this.timeGeneratePipe = 0;
         this.isFly = false;
         this.timeToChangeFrame = 200;
         this.height = 180;
@@ -50,6 +50,8 @@ export class GamePlayScene extends Scene {
     gameOver() {
         this.isGameOver = true;
         this.changeScene = true;
+        this.pipeDown = [];
+        this.pipeUp = [];
         // new added
         updatePassingScore(this.score);
         this.myRender.end();
@@ -147,7 +149,6 @@ export class GamePlayScene extends Scene {
     }
 
     startScene(): void {
-        this.myRender.start();
         this.bird.y = 400;
         this.bird.x = 220;
         this.bird.degree = 0;
@@ -166,5 +167,6 @@ export class GamePlayScene extends Scene {
         this.timeGeneratePipe = 0;
         this.initInputEvent();
         this.generatePipe();
+        this.myRender.start();
     }
 }
