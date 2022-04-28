@@ -1,9 +1,10 @@
-import { Myobject } from "./GameEngine/Myobject";
+import { ImageObject } from "./GameEngine/ImageObject";
 
-export class Pipe extends Myobject {
+
+export class Pipe extends ImageObject {
     updateCheck!: boolean;
-    constructor(x:number,y:number,width:number,height:number,degree:number,image:string,objectType:string,text:string) {
-        super(x,y,width,height,degree,image,objectType,text);
+    constructor(x:number,y:number,width:number,height:number,image:string,degree:number) {
+        super(x,y,width,height,image,degree);
         this.updateCheck = false;
     }
 }

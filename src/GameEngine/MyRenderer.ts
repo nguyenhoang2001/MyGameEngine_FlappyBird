@@ -1,4 +1,8 @@
+import { ButtonObject } from "./ButtonObject";
+import { ImageObject } from "./ImageObject";
 import { Myobject} from "./Myobject";
+import { SpriteObject } from "./SpriteObject";
+import { TextObject } from "./TextObject";
 
 export class MyRenderer {
     canvas: HTMLCanvasElement;
@@ -27,10 +31,22 @@ export class MyRenderer {
         context.clearRect(0,0,this.canvas.width,this.canvas.height);
     }
 
-    renderManyObjects(object:Myobject[]) {
+    renderManyImageObjects(object:ImageObject[]|SpriteObject[]) {
         for(let i = 0; i < object.length; i++) {
-            this.render(object[i]);
+            this.renderImage(object[i]);
         }
+    }
+
+    renderManyButtonObjects(object:ButtonObject[]) {
+        for(let i = 0; i < object.length; i++) {
+            this.renderButton(object[i]);
+        }
+    }
+
+    renderManyTextObjects(object:TextObject[]) {
+        for(let i = 0; i < object.length; i++) {
+            this.renderText(object[i]);
+        }        
     }
 
     roundRect(ctx:any, x:number, y:number, width:number, height:number, radius:any, fill:boolean) {
@@ -56,40 +72,42 @@ export class MyRenderer {
         }
     }
 
-    render(object:Myobject) {
+    renderText(object:TextObject) {
         let context = this.canvas.getContext("2d")!;
-        if(object.objectType == "text") {
-            context.save();
-            context.rect(object.x,object.y,object.width,object.height);
-            context.font = '25pt Arial';
-            context.textAlign = 'center';
-            context.textBaseline = 'middle';
-            context.fillStyle = '#000000'
-            context.strokeText(object.text, object.x +object.width/2, object.y+ object.height/2);
-            context.fillStyle = '#FFFFFF';
-            context.fillText(object.text, object.x +object.width/2, object.y+ object.height/2);
-            context.restore();
-        }
-        else if(object.objectType == "button") {
-            context.save();
-            context.fillStyle = '#FFFF00';
-            this.roundRect(context, object.x, object.y, object.width, object.height, 27, true);
-            context.font = '15pt Arial';
-            context.textAlign = "center";
-            context.textBaseline = "middle";
-            context.fillStyle = '#000000';
-            context.fillText(object.text,object.x+object.width/2,object.y+object.height/2);
-            context.restore();
-        }
-        else if(object.objectType == "img"){
-            let image = document.createElement("img");
-            image.setAttribute("src",object.image);
-            context.save();
-            let rad = object.degree * Math.PI/180;
-            context.translate(object.x + object.width/2, object.y + object.height/2);
-            context.rotate(rad);
-            context.drawImage(image,object.width/2*(-1),object.height/2 * (-1), object.width, object.height);
-            context.restore();
-        }
+        context.save();
+        context.rect(object.x,object.y,object.width,object.height);
+        context.font = '25pt Arial';
+        context.textAlign = 'center';
+        context.textBaseline = 'middle';
+        context.fillStyle = '#000000'
+        context.strokeText(object.text, object.x +object.width/2, object.y+ object.height/2);
+        context.fillStyle = '#FFFFFF';
+        context.fillText(object.text, object.x +object.width/2, object.y+ object.height/2);
+        context.restore();
+    }
+
+    renderButton(object:ButtonObject) {
+        let context = this.canvas.getContext("2d")!;
+        context.save();
+        context.fillStyle = '#FFFF00';
+        this.roundRect(context, object.x, object.y, object.width, object.height, 27, true);
+        context.font = '15pt Arial';
+        context.textAlign = "center";
+        context.textBaseline = "middle";
+        context.fillStyle = '#000000';
+        context.fillText(object.text,object.x+object.width/2,object.y+object.height/2);
+        context.restore();
+    }
+
+    renderImage(object:ImageObject|SpriteObject) {
+        let context = this.canvas.getContext("2d")!;
+        let image = document.createElement("img");
+        image.setAttribute("src",object.image);
+        context.save();
+        let rad = object.degree * Math.PI/180;
+        context.translate(object.x + object.width/2, object.y + object.height/2);
+        context.rotate(rad);
+        context.drawImage(image,object.width/2*(-1),object.height/2 * (-1), object.width, object.height);
+        context.restore();
     }
 }

@@ -2,11 +2,12 @@ import { updatePassingScore } from "./EndingScene";
 import { Myobject} from "./GameEngine/Myobject";
 import { Pipe } from "./Pipe";
 import { Scene } from "./GameEngine/Scene";
-import { Sprite } from "./GameEngine/Sprite";
+import { SpriteObject } from "./GameEngine/SpriteObject";
+import { TextObject } from "./GameEngine/TextObject";
 
 export class GamePlayScene extends Scene {
-    bird:Sprite;
-    textScore:Myobject;
+    bird:SpriteObject;
+    textScore:TextObject;
     pipeDown:Pipe[];
     pipeUp:Pipe[];
     score!: number;
@@ -22,12 +23,12 @@ export class GamePlayScene extends Scene {
     timeToChangeFrame:number;
     constructor() {
         super();
-        this.bird = new Sprite(220,400,60,45,0,'flappyBird.png','img','');
-        this.textScore = new Myobject(446,115,100,45,0,'','text','0');
+        this.bird = new SpriteObject(220,400,60,45,'flappyBird.png',0);
+        this.textScore = new TextObject(446,115,100,45,'0');
         this.pipeDown = [];
         this.pipeUp = [];
-        this.bird.frames.push('flappyBird.png');
         this.bird.frames.push('birdWingDown.png');
+        this.bird.frames.push('flappyBird.png');
         this.score = 0;
         this.isGameOver = false;
         this.gravity = 20;
@@ -43,8 +44,8 @@ export class GamePlayScene extends Scene {
 
     generatePipe() {
         let randomHeight = Math.random() * 60;
-        this.pipeDown.push(new Pipe(1000, 430 - randomHeight, 60,300, 0, 'flappyBirdPipe.png','img',''));
-        this.pipeUp.push(new Pipe(1000, 430 - randomHeight - this.gap, 60,300, 180, 'flappyBirdPipe.png','img',''));
+        this.pipeDown.push(new Pipe(1000, 430 - randomHeight, 60,300,'flappyBirdPipe.png',0));
+        this.pipeUp.push(new Pipe(1000, 430 - randomHeight - this.gap, 60,300,'flappyBirdPipe.png',180));
     }
 
     gameOver() {
@@ -139,17 +140,18 @@ export class GamePlayScene extends Scene {
 
     addObjects() {
         for(let i = 0; i < this.pipeDown.length; i++) {
-            this.add(this.pipeDown[i]);
-            this.add(this.pipeUp[i]);
+            this.addImage(this.pipeDown[i]);
+            this.addImage(this.pipeUp[i]);
         }
-        this.add(this.bird);
-        this.add(this.textScore);
+        this.addSprite(this.bird);
+        this.addText(this.textScore);
     }
 
     startScene(): void {
         this.myRender.start();
         this.bird.y = 400;
         this.bird.x = 220;
+        this.bird.degree = 0;
         this.textScore.text = '0';
         this.pipeDown = [];
         this.pipeUp = [];

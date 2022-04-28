@@ -1,12 +1,16 @@
 import { Myobject} from "./Myobject";
 
-export class Sprite extends Myobject {
+export class SpriteObject extends Myobject {
     frames!:string[];
     indexImage!:number;
-    constructor(x:number,y:number,width:number,height:number,degree:number,image:string,objectType:string,text:string) {
-        super(x,y,width,height,degree,image,objectType,text);
+    image: string;
+    degree: number;
+    constructor(x:number,y:number,width:number,height:number,image:string,degree:number) {
+        super(x,y,width,height);
         this.frames = [];
         this.indexImage = 0;
+        this.degree = degree;
+        this.image = image;
     }
     updateFrame() {
         if(this.frames.length > 0) {

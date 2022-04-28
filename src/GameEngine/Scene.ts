@@ -1,26 +1,49 @@
+import { ButtonObject } from "./ButtonObject";
+import { ImageObject } from "./ImageObject";
 import { Myobject } from "./Myobject";
 import { MyRenderer} from "./MyRenderer";
+import { SpriteObject } from "./SpriteObject";
+import { TextObject } from "./TextObject";
 
 export class Scene {
     changeScene!:boolean;
     myRender:MyRenderer;
-    children:Myobject[];
+    imageObjects:ImageObject[];
+    spriteObjects:SpriteObject[];
+    buttonObjects:ButtonObject[];
+    textObjects:TextObject[];
     constructor() {
         this.myRender = new MyRenderer('.sky');
         this.changeScene = false;
-        this.children = [];
+        this.imageObjects = [];
+        this.spriteObjects = [];
+        this.buttonObjects = [];
+        this.textObjects = [];
     }
     inputProcessing() {}
     startScene() {}
     update(time: number, delta: number) {}
-    add(object:Myobject) {
-        this.children.push(object);
+    addImage(object:ImageObject) {
+        this.imageObjects.push(object);
+    }
+    addSprite(object:SpriteObject) {
+        this.spriteObjects.push(object);
+    }
+    addButton(object:ButtonObject) {
+        this.buttonObjects.push(object);
+    }
+    addText(object:TextObject) {
+        this.textObjects.push(object);
     }
     render() {
-        if(this.children.length > 0) {
-            this.myRender.clear();
-            this.myRender.renderManyObjects(this.children);
-            this.children = [];
-        }
+        this.myRender.clear();
+        this.myRender.renderManyImageObjects(this.imageObjects);
+        this.myRender.renderManyImageObjects(this.spriteObjects);
+        this.myRender.renderManyButtonObjects(this.buttonObjects);
+        this.myRender.renderManyTextObjects(this.textObjects);
+        this.imageObjects = [];
+        this.spriteObjects = [];
+        this.buttonObjects = [];
+        this.textObjects = [];
     }
 }
