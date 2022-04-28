@@ -1,6 +1,5 @@
 import { ButtonObject } from "./ButtonObject";
 import { ImageObject } from "./ImageObject";
-import { Myobject } from "./Myobject";
 import { MyRenderer} from "./MyRenderer";
 import { SpriteObject } from "./SpriteObject";
 import { TextObject } from "./TextObject";

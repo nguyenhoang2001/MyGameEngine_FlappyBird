@@ -1,6 +1,5 @@
 import { ButtonObject } from "./ButtonObject";
 import { ImageObject } from "./ImageObject";
-import { Myobject} from "./Myobject";
 import { SpriteObject } from "./SpriteObject";
 import { TextObject } from "./TextObject";
 
@@ -90,7 +89,7 @@ export class MyRenderer {
         let context = this.canvas.getContext("2d")!;
         context.save();
         context.fillStyle = '#FFFF00';
-        this.roundRect(context, object.x, object.y, object.width, object.height, 27, true);
+        this.roundRect(context, object.x, object.y, object.width, object.height, object.borderRadius, true);
         context.font = '15pt Arial';
         context.textAlign = "center";
         context.textBaseline = "middle";

@@ -1,5 +1,4 @@
 import { updatePassingScore } from "./EndingScene";
-import { Myobject} from "./GameEngine/Myobject";
 import { Pipe } from "./Pipe";
 import { Scene } from "./GameEngine/Scene";
 import { SpriteObject } from "./GameEngine/SpriteObject";

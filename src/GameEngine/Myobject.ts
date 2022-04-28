@@ -1,4 +1,4 @@
-export class Myobject {
+export class MyObject {
     x:number;
     y:number;
     width:number;

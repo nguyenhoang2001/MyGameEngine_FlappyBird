@@ -1,6 +1,6 @@
-import { Myobject} from "./Myobject";
+import { MyObject} from "./MyObject";
 
-export class SpriteObject extends Myobject {
+export class SpriteObject extends MyObject {
     frames!:string[];
     indexImage!:number;
     image: string;

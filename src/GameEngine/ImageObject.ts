@@ -1,6 +1,6 @@
-import { Myobject } from "./Myobject";
+import { MyObject } from "./MyObject";
 
-export class ImageObject extends Myobject {
+export class ImageObject extends MyObject {
     image: string;
     degree: number;
     constructor(x:number,y:number,width:number,height:number,image:string,degree:number) {

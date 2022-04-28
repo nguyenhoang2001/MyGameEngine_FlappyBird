@@ -1,5 +1,5 @@
 import { ButtonObject } from "./GameEngine/ButtonObject";
-import { Myobject} from "./GameEngine/Myobject";
+import { MyObject} from "./GameEngine/MyObject";
 import { Scene } from "./GameEngine/Scene";
 import { TextObject } from "./GameEngine/TextObject";
 
@@ -21,7 +21,7 @@ export class EndingScene extends Scene {
         this.highScore = 0;
         this.textScore = new TextObject(400,255,200,45,'Your score: ');
         this.textHighScore = new TextObject(400,165,200,45,'High score: ');
-        this.rePlayButton = new ButtonObject(400,350,200,50,'Play again');
+        this.rePlayButton = new ButtonObject(400,350,200,50,'Play again',27);
     }
 
     getMousePos(canvas:any, event: any) {
@@ -32,7 +32,7 @@ export class EndingScene extends Scene {
         };
     }
 
-    isInside(pos:any, object:Myobject) {
+    isInside(pos:any, object:MyObject) {
         return pos.x > object.x && pos.x < object.x+object.width && 
         pos.y < object.y +object.height && pos.y > object.y;
     }

@@ -1,5 +1,5 @@
 import { ButtonObject } from "./GameEngine/ButtonObject";
-import { Myobject} from "./GameEngine/Myobject";
+import { MyObject} from "./GameEngine/MyObject";
 import { Scene } from "./GameEngine/Scene";
 
 export class StartScene extends Scene {
@@ -8,7 +8,7 @@ export class StartScene extends Scene {
     constructor() {
         super();
         this.isStart = false;
-        this.playButton = new ButtonObject(400,350,200,50,'Play');
+        this.playButton = new ButtonObject(400,350,200,50,'Play',27);
     }
 
     getMousePos(canvas:any, event: any) {
@@ -19,7 +19,7 @@ export class StartScene extends Scene {
         };
     }
 
-    isInside(pos:any, object:Myobject) {
+    isInside(pos:any, object:MyObject) {
         return pos.x > object.x && pos.x < object.x+object.width && 
         pos.y < object.y +object.height && pos.y > object.y;
     }
