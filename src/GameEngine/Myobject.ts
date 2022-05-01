@@ -1,4 +1,6 @@
-export class MyObject {
+import { MyObjetInterface } from "./GameEngineInterfaces/MyObjectInterface";
+
+export abstract class MyObject implements MyObjetInterface {
     x:number;
     y:number;
     width:number;

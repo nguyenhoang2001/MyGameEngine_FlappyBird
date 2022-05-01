@@ -1,6 +1,7 @@
+import { ButtonObjectInterface } from "./GameEngineInterfaces/ButtonObjectInterface";
 import { MyObject } from "./MyObject";
 
-export class ButtonObject extends MyObject {
+export class ButtonObject extends MyObject implements ButtonObjectInterface{
     text: string;
     borderRadius: number;
     constructor(x:number,y:number,width:number,height:number,text:string,borderRadius:number) {

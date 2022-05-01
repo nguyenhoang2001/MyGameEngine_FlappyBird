@@ -1,7 +1,9 @@
 import { Scene } from "./Scene";
+import { SceneInterface } from "./GameEngineInterfaces/SceneInterface";
+import { SceneManagerInterface } from "./GameEngineInterfaces/SceneManagerInterface";
 
-export class SceneManager {
-    scenes: Scene[];
+export class SceneManager implements SceneManagerInterface {
+    scenes: SceneInterface[];
     numberScenes!:number;
     currentIndex!:number;
     constructor() {
@@ -20,17 +22,20 @@ export class SceneManager {
         this.changeScene();
     }
 
-    addScene(scene: Scene) {
+    addScene(scene: SceneInterface) {
         this.scenes.push(scene)
     }
 
     startScene() {
-        if(this.scenes.length > 0)
+        if(this.scenes.length > 0) {
+            this.scenes[this.currentIndex].startRender();
             this.scenes[this.currentIndex].startScene();
+        }
     }
 
     changeScene() {
         if(this.scenes[this.currentIndex].changeScene == true) {
+            this.scenes[this.currentIndex].endRender();
             this.scenes[this.currentIndex].changeScene = false;
             if(this.currentIndex + 1 >= this.scenes.length) {
                 this.currentIndex = 0;

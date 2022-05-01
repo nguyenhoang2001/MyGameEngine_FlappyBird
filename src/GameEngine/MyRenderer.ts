@@ -1,27 +1,30 @@
 import { ButtonObject } from "./ButtonObject";
+import { ButtonObjectInterface } from "./GameEngineInterfaces/ButtonObjectInterface";
 import { ImageObject } from "./ImageObject";
+import { ImageObjectInterface } from "./GameEngineInterfaces/ImageObjectInterface";
+import { MyObjetInterface } from "./GameEngineInterfaces/MyObjectInterface";
+import { MyRendererInterface } from "./GameEngineInterfaces/MyRendererInterface";
 import { SpriteObject } from "./SpriteObject";
+import { SpriteObjectInterface } from "./GameEngineInterfaces/SpriteObjectInterface";
 import { TextObject } from "./TextObject";
+import { TextObjectInterface } from "./GameEngineInterfaces/TextObjectInterface";
 
-export class MyRenderer {
+export class MyRenderer implements MyRendererInterface {
     canvas: HTMLCanvasElement;
     parentId:string;
     constructor(parentId:string) {
         this.canvas = document.createElement("canvas");
         this.canvas.width = 1000;
         this.canvas.height = 730;
-        console.log('the width of canvas: ' + this.canvas.width);
         this.parentId = parentId;
     }
 
     start() {
         let objectContainer = document.querySelector(this.parentId) as HTMLInputElement;
         objectContainer.appendChild(this.canvas);
-        console.log('ok start canvas: ' + this.parentId);
     }
 
     end() {
-        //this.clear();
         this.canvas.remove();
     }
 
@@ -30,19 +33,19 @@ export class MyRenderer {
         context.clearRect(0,0,this.canvas.width,this.canvas.height);
     }
 
-    renderManyImageObjects(object:ImageObject[]|SpriteObject[]) {
+    renderManyImageObjects(object:ImageObjectInterface[]|SpriteObjectInterface[]) {
         for(let i = 0; i < object.length; i++) {
             this.renderImage(object[i]);
         }
     }
 
-    renderManyButtonObjects(object:ButtonObject[]) {
+    renderManyButtonObjects(object:ButtonObjectInterface[]) {
         for(let i = 0; i < object.length; i++) {
             this.renderButton(object[i]);
         }
     }
 
-    renderManyTextObjects(object:TextObject[]) {
+    renderManyTextObjects(object:TextObjectInterface[]) {
         for(let i = 0; i < object.length; i++) {
             this.renderText(object[i]);
         }        
@@ -71,7 +74,7 @@ export class MyRenderer {
         }
     }
 
-    renderText(object:TextObject) {
+    renderText(object:TextObjectInterface) {
         let context = this.canvas.getContext("2d")!;
         context.save();
         context.rect(object.x,object.y,object.width,object.height);
@@ -85,7 +88,7 @@ export class MyRenderer {
         context.restore();
     }
 
-    renderButton(object:ButtonObject) {
+    renderButton(object:ButtonObjectInterface) {
         let context = this.canvas.getContext("2d")!;
         context.save();
         context.fillStyle = '#FFFF00';
@@ -98,7 +101,7 @@ export class MyRenderer {
         context.restore();
     }
 
-    renderImage(object:ImageObject|SpriteObject) {
+    renderImage(object:ImageObjectInterface|SpriteObjectInterface) {
         let context = this.canvas.getContext("2d")!;
         let image = document.createElement("img");
         image.setAttribute("src",object.image);

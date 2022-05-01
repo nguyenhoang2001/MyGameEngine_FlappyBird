@@ -3,23 +3,26 @@ import { Pipe } from "./Pipe";
 import { Scene } from "./GameEngine/Scene";
 import { SpriteObject } from "./GameEngine/SpriteObject";
 import { TextObject } from "./GameEngine/TextObject";
+import { SpriteObjectInterface } from "./GameEngine/GameEngineInterfaces/SpriteObjectInterface";
+import { TextObjectInterface } from "./GameEngine/GameEngineInterfaces/TextObjectInterface";
+import { PipeInterface } from "./MyGameInterfaces/PipeInterface";
 
 export class GamePlayScene extends Scene {
-    bird:SpriteObject;
-    textScore:TextObject;
-    pipeDown:Pipe[];
-    pipeUp:Pipe[];
-    score!: number;
-    isGameOver!:boolean;
-    isFly!: boolean;
-    gravity!:number;
-    gap!:number;
-    timeGeneratePipe!:number;
-    height!:number;
-    velocity!:number;
-    degreeFly!:number;
-    isFlyUp!:boolean;
-    timeToChangeFrame:number;
+    private bird:SpriteObjectInterface;
+    private textScore:TextObjectInterface;
+    private pipeDown:PipeInterface[];
+    private pipeUp:PipeInterface[];
+    private score: number;
+    private isGameOver!:boolean;
+    private isFly: boolean;
+    private gravity:number;
+    private gap:number;
+    private timeGeneratePipe:number;
+    private height:number;
+    private velocity:number;
+    private degreeFly:number;
+    private isFlyUp:boolean;
+    private timeToChangeFrame:number;
     constructor() {
         super();
         this.bird = new SpriteObject(220,400,60,45,'flappyBird.png',0);
@@ -31,7 +34,7 @@ export class GamePlayScene extends Scene {
         this.score = 0;
         this.isGameOver = false;
         this.gravity = 20;
-        this.gap = 450;
+        this.gap = 500;//new
         this.timeGeneratePipe = 0;
         this.isFly = false;
         this.timeToChangeFrame = 200;
@@ -41,25 +44,25 @@ export class GamePlayScene extends Scene {
         this.isFlyUp = false;
     }
 
-    generatePipe() {
+    private generatePipe() {
         let randomHeight = Math.random() * 60;
         this.pipeDown.push(new Pipe(1000, 430 - randomHeight, 60,300,'flappyBirdPipe.png',0));
         this.pipeUp.push(new Pipe(1000, 430 - randomHeight - this.gap, 60,300,'flappyBirdPipe.png',180));
     }
 
-    gameOver() {
+    private gameOver() {
         this.isGameOver = true;
         this.changeScene = true;
         this.pipeDown = [];
         this.pipeUp = [];
         // new added
         updatePassingScore(this.score);
-        this.myRender.end();
+        // this.myRender.end();
         document.removeEventListener('click',() => {this.isFly = true;});
         console.log('Game over');
     }
 
-    moveObstacle() {
+    private moveObstacle() {
         for(let i = 0; i < this.pipeDown.length; i++) {
             this.pipeDown[i].x -= 2;
             this.pipeUp[i].x -= 2;
@@ -86,13 +89,16 @@ export class GamePlayScene extends Scene {
         }
     }
 
-    fly() {
+    private fly() {
+        // new added
+        //this.velocity += 2;
+
         this.height = this.bird.y - 
         Math.pow(this.velocity, 2)*Math.pow(Math.sin(this.degreeFly), 2);
         this.isFlyUp = true;
     }
 
-    initInputEvent() {
+    private initInputEvent() {
         document.addEventListener('click', () => {this.isFly = true});
     }
 
@@ -113,6 +119,10 @@ export class GamePlayScene extends Scene {
 
             this.bird.x += this.velocity*Math.cos(this.degreeFly)*delta*0.01;
             if(this.isFlyUp == false) {
+                // new added
+                // this.velocity -= 1;
+                // if(this.velocity <= 12) this.velocity = 12;
+
                 this.bird.degree += 1;
                 if(this.bird.degree >= 30) {
                     this.bird.degree = 30;
@@ -130,7 +140,8 @@ export class GamePlayScene extends Scene {
                 }
             }
             this.moveObstacle();
-            if(this.timeGeneratePipe >= 3000) {
+            let timeInterval = Math.floor(Math.random() * (4000 - 1000 + 1) + 1000);
+            if(this.timeGeneratePipe >= timeInterval) {
                 this.generatePipe();
                 this.timeGeneratePipe = 0;
             } else 
@@ -139,7 +150,7 @@ export class GamePlayScene extends Scene {
         }
     }
 
-    addObjects() {
+    private addObjects() {
         for(let i = 0; i < this.pipeDown.length; i++) {
             this.addImage(this.pipeDown[i]);
             this.addImage(this.pipeUp[i]);
@@ -167,6 +178,6 @@ export class GamePlayScene extends Scene {
         this.timeGeneratePipe = 0;
         this.initInputEvent();
         this.generatePipe();
-        this.myRender.start();
+        // this.myRender.start();
     }
 }

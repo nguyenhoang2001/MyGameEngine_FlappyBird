@@ -1,8 +1,9 @@
 import { MyObject} from "./MyObject";
+import { SpriteObjectInterface } from "./GameEngineInterfaces/SpriteObjectInterface";
 
-export class SpriteObject extends MyObject {
-    frames!:string[];
-    indexImage!:number;
+export class SpriteObject extends MyObject implements SpriteObjectInterface {
+    frames:string[];
+    indexImage:number;
     image: string;
     degree: number;
     constructor(x:number,y:number,width:number,height:number,image:string,degree:number) {

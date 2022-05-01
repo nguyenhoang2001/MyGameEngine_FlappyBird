@@ -1,9 +1,12 @@
+import { GameInterface } from "./GameEngineInterfaces/GameInterface";
 import { Scene } from "./Scene";
+import { SceneInterface } from "./GameEngineInterfaces/SceneInterface";
 import { SceneManager } from "./SceneManager";
+import { SceneManagerInterface } from "./GameEngineInterfaces/SceneManagerInterface";
 
-export class Game {
-    scenes: SceneManager;
-    lastTime: number;
+export abstract class Game implements GameInterface {
+    private scenes: SceneManagerInterface;
+    private lastTime: number;
     constructor() {
         this.scenes = new SceneManager();
         this.lastTime = window.performance.now();
@@ -15,7 +18,7 @@ export class Game {
         requestAnimationFrame(()=>this.loop());
     }
 
-    loop() {
+    private loop() {
         var delta = window.performance.now() - this.lastTime;
         var time = window.performance.now();
         this.scenes.inputProcessing();
@@ -25,7 +28,7 @@ export class Game {
         requestAnimationFrame(()=>this.loop());
     }
 
-    addScene(scene: Scene) {
+    protected addScene(scene: SceneInterface) {
         this.scenes.addScene(scene);
     }
 }

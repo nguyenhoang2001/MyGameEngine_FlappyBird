@@ -1,17 +1,18 @@
 import { ButtonObject } from "./GameEngine/ButtonObject";
+import { ButtonObjectInterface } from "./GameEngine/GameEngineInterfaces/ButtonObjectInterface";
 import { MyObject} from "./GameEngine/MyObject";
 import { Scene } from "./GameEngine/Scene";
 
 export class StartScene extends Scene {
-    isStart:boolean;
-    playButton:ButtonObject;
+    private isStart:boolean;
+    private playButton:ButtonObjectInterface;
     constructor() {
         super();
         this.isStart = false;
         this.playButton = new ButtonObject(400,350,200,50,'Play',27);
     }
 
-    getMousePos(canvas:any, event: any) {
+    private getMousePos(canvas:any, event: any) {
         var rect = canvas.getBoundingClientRect();
         return {
             x: event.clientX - rect.left,
@@ -19,12 +20,12 @@ export class StartScene extends Scene {
         };
     }
 
-    isInside(pos:any, object:MyObject) {
+    private isInside(pos:any, object:MyObject) {
         return pos.x > object.x && pos.x < object.x+object.width && 
         pos.y < object.y +object.height && pos.y > object.y;
     }
 
-    isClick(event:any) {
+    private isClick(event:any) {
         var mousePos = this.getMousePos(this.myRender.canvas, event);
         if(this.isInside(mousePos, this.playButton)) {
             this.isStart = true;
@@ -33,7 +34,7 @@ export class StartScene extends Scene {
         }
     }
 
-    initInputEvent() {
+    private initInputEvent() {
         this.myRender.canvas.addEventListener('click',(event) => {
             this.isClick(event);
         })
@@ -45,7 +46,7 @@ export class StartScene extends Scene {
             this.myRender.canvas.removeEventListener('click',(event) => {
                 this.isClick(event);
             })
-            this.myRender.end();
+            // this.myRender.end();
             this.isStart = false;
         }
     }
@@ -54,16 +55,12 @@ export class StartScene extends Scene {
         this.addObjects();
     }
 
-    addObjects() {
+    private addObjects() {
         this.addButton(this.playButton);
     }
 
     startScene(): void {
-        this.myRender.start();
         this.isStart = false;
         this.initInputEvent();
     }
 }
-
-
-
